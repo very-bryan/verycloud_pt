@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VeryCloud Pitch Deck - Problem</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #020617;
+            overflow: hidden;
+            width: 1280px;
+            height: 720px;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            position: relative;
+            background-color: #020617;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        /* Left Content Area */
+        .left-panel {
+            flex: 1;
+            padding: 60px 40px 60px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        /* Right Visual Area */
+        .right-panel {
+            flex: 1;
+            background-color: #0f172a; /* Slate 900 */
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Background Glow Effects */
+        .glow-red {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background-color: rgba(239, 68, 68, 0.1); /* Red 500 */
+            border-radius: 50%;
+            filter: blur(120px);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+        }
+
+        .grid-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        /* Typography */
+        .label-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            background-color: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 6px;
+            color: #f87171; /* Red 400 */
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            width: fit-content;
+        }
+
+        .main-title {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: #f8fafc;
+        }
+
+        .highlight-text {
+            color: #f87171;
+            position: relative;
+            display: inline-block;
+        }
+
+        .description {
+            font-size: 18px;
+            color: #94a3b8;
+            margin-bottom: 48px;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        /* Pain Point List */
+        .pain-point-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            gap: 20px;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background-color: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #f87171;
+            font-size: 20px;
+        }
+
+        .point-content h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin: 0 0 8px 0;
+        }
+
+        .point-content p {
+            font-size: 16px;
+            color: #94a3b8;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Terminal Mockup in Right Panel */
+        .terminal-window {
+            width: 480px;
+            background-color: #1e293b;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+            z-index: 2;
+            transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
+        }
+
+        .terminal-header {
+            background-color: #334155;
+            padding: 12px 16px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background-color: #ef4444; }
+        .dot-yellow { background-color: #f59e0b; }
+        .dot-green { background-color: #10b981; }
+
+        .terminal-body {
+            padding: 24px;
+            color: #e2e8f0;
+            font-size: 14px;
+            line-height: 1.6;
+            min-height: 300px;
+        }
+
+        .code-line {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .code-error {
+            color: #f87171;
+        }
+
+        .code-dim {
+            color: #64748b;
+        }
+
+        /* Floating Alert */
+        .alert-card {
+            position: absolute;
+            bottom: 80px;
+            right: 60px;
+            background-color: rgba(127, 29, 29, 0.95); /* Red 900 */
+            border: 1px solid #ef4444;
+            padding: 20px 24px;
+            border-radius: 12px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            backdrop-filter: blur(8px);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Left Panel: Content -->
+<div class="left-panel">
+<div class="label-badge">
+<i class="fas fa-exclamation-circle" style="margin-right: 8px;"></i> THE PROBLEM
+            </div>
+<h1 class="main-title">
+<p>AI가 코딩은 해주지만,</p>
+<p class="highlight-text">배포는 여전히 지옥입니다</p>
+</h1>
+<p class="description">
+                누구나 AI로 앱을 만들 수 있는 시대가 되었지만, <br/>
+                그 앱을 세상에 내놓는 '라스트 마일'은 여전히 전문가의 영역입니다.
+            </p>
+<div class="pain-points">
+<div class="pain-point-item">
+<div class="icon-box">
+<i class="fas fa-cogs"></i>
+</div>
+<div class="point-content">
+<h3>Configuration Hell</h3>
+<p>EC2, IAM, VPC, Security Group... <br/>초보 개발자에겐 너무나 가혹한 설정 과정</p>
+</div>
+</div>
+<div class="pain-point-item">
+<div class="icon-box">
+<i class="fas fa-laptop-house"></i>
+</div>
+<div class="point-content">
+<h3>Localhost Trap</h3>
+<p>"내 컴퓨터에선 되는데..." <br/>친구에게 링크 하나 보내줄 수 없는 로컬의 한계</p>
+</div>
+</div>
+<div class="pain-point-item">
+<div class="icon-box">
+<i class="fas fa-hourglass-half"></i>
+</div>
+<div class="point-content">
+<h3>Opportunity Cost</h3>
+<p>아이디어를 실현하는 시간보다 <br/>인프라 공부에 쏟는 시간이 더 깁니다.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Visual -->
+<div class="right-panel">
+<div class="grid-pattern"></div>
+<div class="glow-red"></div>
+<!-- Terminal Mockup -->
+<div class="terminal-window">
+<div class="terminal-header">
+<div class="dot dot-red"></div>
+<div class="dot dot-yellow"></div>
+<div class="dot dot-green"></div>
+</div>
+<div class="terminal-body">
+<span class="code-line text-green-400">$ npm run deploy</span>
+<span class="code-line code-dim">Building production bundle...</span>
+<span class="code-line code-dim">Optimization complete.</span>
+<span class="code-line text-blue-400">Uploading to cloud provider...</span>
+<br/>
+<span class="code-line code-error">Error: Deploy failed with exit code 1</span>
+<span class="code-line code-error">----------------------------------------</span>
+<span class="code-line code-error">x Missing permissions: iam:PassRole</span>
+<span class="code-line code-error">x Security Group does not allow port 80</span>
+<span class="code-line code-error">x Database connection timeout (5000ms)</span>
+<span class="code-line code-error">x SSL certificate validation failed</span>
+<br/>
+<span class="code-line code-dim">Hint: Check your VPC peering settings and ensure your subnet route table is configured correctly for public access.</span>
+<br/>
+<span class="code-line text-red-500 font-bold">💥 Deployment aborted.</span>
+<span class="code-line text-gray-500">user@macbook-pro ~/my-app $ <span class="animate-pulse">_</span></span>
+</div>
+</div>
+<!-- Floating Alert -->
+<div class="alert-card">
+<i class="fas fa-times-circle" style="font-size: 24px; color: #ef4444;"></i>
+<div>
+<p style="font-weight: 700; font-size: 16px; margin: 0 0 4px 0;">배포 실패</p>
+<p style="font-size: 13px; margin: 0; opacity: 0.8;">연결할 수 없는 사이트입니다.</p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

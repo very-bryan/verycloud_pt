@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VeryCloud Pitch Deck - Solution</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #020617; /* Slate 950 */
+            overflow: hidden;
+            width: 1280px;
+            height: 720px;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #020617;
+            color: #ffffff;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        /* Background Effects */
+        .bg-glow-center {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background-color: rgba(16, 185, 129, 0.08); /* Emerald 500 */
+            border-radius: 50%;
+            filter: blur(120px);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+        }
+
+        .bg-glow-accent {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background-color: rgba(139, 92, 246, 0.08); /* Violet 500 */
+            border-radius: 50%;
+            filter: blur(100px);
+            bottom: -200px;
+            right: -100px;
+            z-index: 0;
+        }
+
+        .grid-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.4;
+            z-index: 1;
+        }
+
+        /* Header Section - Modified for Left Alignment */
+        .header-section {
+            text-align: left; /* Changed from center to left */
+            padding-top: 40px; /* Reduced from 50px */
+            padding-left: 60px; /* Added alignment padding */
+            margin-bottom: 30px; /* Reduced from 40px */
+            z-index: 10;
+            position: relative;
+        }
+
+        .label-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 16px;
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 9999px;
+            color: #34d399; /* Emerald 400 */
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.05em;
+        }
+
+        .main-title {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #f8fafc;
+            margin: 0;
+        }
+
+        .highlight-text {
+            color: #34d399; /* Emerald 400 */
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Main Content Area */
+        .content-area {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            z-index: 10;
+            padding: 0 60px 40px 60px; /* Added 40px bottom padding */
+            gap: 60px;
+        }
+
+        /* Terminal Window */
+        .terminal-container {
+            width: 700px;
+            background-color: rgba(15, 23, 42, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+        }
+
+        .terminal-header {
+            background-color: #1e293b;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+            margin-right: 16px;
+        }
+
+        .control-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-title {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-left: auto;
+            margin-right: auto;
+            transform: translateX(-24px);
+        }
+
+        .terminal-body {
+            padding: 30px;
+            color: #e2e8f0;
+            font-size: 16px;
+            line-height: 1.7;
+            height: 400px;
+        }
+
+        .cmd-line {
+            margin-bottom: 12px;
+            display: flex;
+        }
+
+        .prompt { color: #a78bfa; margin-right: 10px; font-weight: 700; }
+        .command { color: #f8fafc; font-weight: 500; }
+        .comment { color: #64748b; font-style: italic; }
+        
+        .process-group {
+            margin: 20px 0;
+            padding-left: 10px;
+            border-left: 2px solid rgba(52, 211, 153, 0.2);
+        }
+
+        .log-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+        }
+
+        .check-icon {
+            color: #34d399;
+            margin-right: 12px;
+            font-size: 14px;
+        }
+
+        .success-box {
+            margin-top: 24px;
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .success-title {
+            color: #34d399;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .success-link {
+            color: #60a5fa;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .cursor-blink {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: #cbd5e1;
+            margin-left: 4px;
+            vertical-align: middle;
+            opacity: 0.7;
+        }
+
+        /* Feature Cards (Right Side) */
+        .features-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Changed from center to align top with terminal */
+            gap: 24px;
+            padding-top: 10px; /* Visual alignment with terminal header */
+        }
+
+        .feature-card {
+            background-color: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-icon-box {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(139, 92, 246, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a78bfa;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .feature-content h3 {
+            margin: 0 0 4px 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .feature-content p {
+            margin: 0;
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background Elements -->
+<div class="grid-pattern"></div>
+<div class="bg-glow-center"></div>
+<div class="bg-glow-accent"></div>
+<!-- Header -->
+<header class="header-section">
+<div class="label-badge">
+<i class="fas fa-magic" style="margin-right: 8px;"></i> THE SOLUTION
+            </div>
+<h1 class="main-title">
+                "배포해줘" <span class="highlight-text">한마디면 끝.</span>
+</h1>
+<p style="color: #94a3b8; font-size: 20px; margin-top: 16px;">
+                복잡한 인프라 설정은 AI에게 맡기세요. 당신은 코드만 작성하면 됩니다.
+            </p>
+</header>
+<!-- Main Content -->
+<div class="content-area">
+<!-- Terminal Demo -->
+<div class="terminal-container">
+<div class="terminal-header">
+<div class="window-controls">
+<div class="control-dot" style="background-color: #ef4444;"></div>
+<div class="control-dot" style="background-color: #f59e0b;"></div>
+<div class="control-dot" style="background-color: #10b981;"></div>
+</div>
+<div class="terminal-title">user — -zsh — 80×24</div>
+</div>
+<div class="terminal-body">
+<div class="cmd-line">
+<span class="prompt">➜</span>
+<span class="command">npm install -g @verycloud/cli</span>
+</div>
+<div class="cmd-line" style="margin-bottom: 24px;">
+<span class="comment" style="font-size: 14px;">+ @verycloud/cli@1.0.0 installed</span>
+</div>
+<div class="cmd-line">
+<span class="prompt">➜</span>
+<span class="command">vc login</span>
+</div>
+<div class="cmd-line" style="margin-bottom: 24px;">
+<span class="comment" style="font-size: 14px;">Logged in as bryan@example.com</span>
+</div>
+<div class="cmd-line">
+<span class="prompt">➜</span>
+<span class="command">vc deploy --ai "이거 지금 바로 배포해줘"</span>
+</div>
+<div class="process-group">
+<div class="log-item">
+<i class="fas fa-check check-icon"></i>
+<span>AI Agent analyzing project structure...</span>
+</div>
+<div class="log-item">
+<i class="fas fa-check check-icon"></i>
+<span>Detected Framework: <strong>Next.js (App Router)</strong></span>
+</div>
+<div class="log-item">
+<i class="fas fa-check check-icon"></i>
+<span>Provisioning <strong>PostgreSQL</strong> (Auto-scaled)</span>
+</div>
+<div class="log-item">
+<i class="fas fa-check check-icon"></i>
+<span>Generating SSL Certificate for domain...</span>
+</div>
+</div>
+<div class="success-box">
+<div class="success-title">
+<i class="fas fa-rocket"></i> Deployment Successful! (1.8s)
+                        </div>
+<div style="font-size: 14px; color: #a7f3d0;">
+                            Your app is live at: <span class="success-link">https://my-app.verycloud.io</span>
+</div>
+</div>
+<div class="cmd-line" style="margin-top: 16px;">
+<span class="prompt">➜</span>
+<span class="cursor-blink"></span>
+</div>
+</div>
+</div>
+<!-- Right Side Features -->
+<div class="features-container">
+<div class="feature-card">
+<div class="feature-icon-box" style="color: #60a5fa; background-color: rgba(96, 165, 250, 0.1);">
+<i class="fas fa-robot"></i>
+</div>
+<div class="feature-content">
+<h3>AI Intent Analysis</h3>
+<p>단순 명령어를 넘어 문맥을 이해합니다.<br/>"DB도 필요해"라고 말하면 자동 생성합니다.</p>
+</div>
+</div>
+<div class="feature-card">
+<div class="feature-icon-box" style="color: #34d399; background-color: rgba(52, 211, 153, 0.1);">
+<i class="fas fa-server"></i>
+</div>
+<div class="feature-content">
+<h3>Zero Configuration</h3>
+<p>Dockerfile, YAML 없이도<br/>최적의 런타임 환경을 자동 구성합니다.</p>
+</div>
+</div>
+<div class="feature-card">
+<div class="feature-icon-box">
+<i class="fas fa-globe"></i>
+</div>
+<div class="feature-content">
+<h3>Instant Global Edge</h3>
+<p>배포 즉시 전 세계 엣지 네트워크에 캐싱되어<br/>어디서든 빠르게 접속됩니다.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

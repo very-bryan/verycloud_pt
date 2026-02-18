@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VeryCloud Pitch Deck - Gold Rush Story</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&amp;family=Noto+Sans+KR:wght@300;400;500;700;900&amp;family=Noto+Serif+KR:wght@400;600;700;900&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #020617;
+            color: #ffffff;
+            overflow: hidden;
+            width: 1280px;
+            height: 720px;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 50px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Background Elements */
+        .bg-pattern {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .glow-effect {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: #a78bfa;
+            filter: blur(150px);
+            opacity: 0.05;
+            top: -200px;
+            right: -200px;
+            z-index: 0;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* Header Section */
+        .header-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Left Align */
+            margin-bottom: 30px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            background-color: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 6px;
+            color: #fbbf24;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.05em;
+        }
+
+        .main-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: #f8fafc;
+            margin: 0 0 16px 0;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .story-text {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 20px;
+            line-height: 1.6;
+            color: #cbd5e1;
+            text-align: left; /* Left Align */
+            margin: 0;
+            max-width: 100%;
+        }
+
+        .highlight-gold { color: #fbbf24; font-weight: 700; }
+        .highlight-purple { color: #a78bfa; font-weight: 700; }
+
+        /* Comparison Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            flex: 1;
+        }
+
+        .card {
+            background-color: rgba(30, 41, 59, 0.4);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card.gold { border-color: rgba(251, 191, 36, 0.3); }
+        .card.purple { border-color: rgba(167, 139, 250, 0.3); }
+
+        .card-header {
+            padding: 10px 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .card.gold .card-header { background-color: rgba(251, 191, 36, 0.1); color: #fbbf24; }
+        .card.purple .card-header { background-color: rgba(167, 139, 250, 0.1); color: #a78bfa; }
+
+        .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Split inside card */
+        .section-loser {
+            padding: 16px 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-winner {
+            flex: 1;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.02);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .icon-box {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .role-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        .entity-text {
+            font-size: 15px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .winner-name {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: #ffffff;
+        }
+
+        .winner-desc {
+            font-size: 13px;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+        }
+
+        .stat-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            width: fit-content;
+        }
+        
+        .card.gold .stat-pill { background: rgba(251, 191, 36, 0.1); color: #fbbf24; }
+        .card.purple .stat-pill { background: rgba(167, 139, 250, 0.1); color: #a78bfa; }
+
+        .bg-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 80px;
+            opacity: 0.05;
+        }
+
+        /* Bottom Insight Box */
+        .insight-box {
+            margin-top: 24px;
+            padding: 20px 24px;
+            background-color: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .insight-icon {
+            color: #a78bfa;
+            font-size: 20px;
+            margin-top: 4px;
+        }
+
+        .insight-content {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #e2e8f0;
+            text-align: left;
+        }
+
+        .highlight-brand {
+            color: #a78bfa;
+            font-weight: 700;
+            border-bottom: 2px solid rgba(167, 139, 250, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<div class="bg-pattern"></div>
+<div class="glow-effect"></div>
+<div class="content-wrapper">
+<!-- Header -->
+<div class="header-section">
+<div class="badge">
+<i class="fas fa-history" style="margin-right: 6px;"></i> HISTORY REPEATS ITSELF
+            </div>
+<h1 class="main-title">골드러시의 교훈 — 진짜 돈을 번 사람들</h1>
+<p class="story-text">
+                "1849년 캘리포니아, 수천 명이 금을 캐러 갔지만 대부분은 빈손으로 돌아왔고,<br/>
+                진짜 부자가 된 건 <span class="highlight-gold">곡괭이와 청바지를 판 상인들</span>이었습니다."
+            </p>
+</div>
+<!-- Comparison Grid -->
+<div class="grid-container">
+<!-- 1849 Card -->
+<div class="card gold">
+<div class="card-header">1849 Gold Rush</div>
+<div class="card-body">
+<div class="section-loser">
+<div class="icon-box"><i class="fas fa-user-slash"></i></div>
+<div>
+<div class="role-label">The Crowd (Losers)</div>
+<div class="entity-text">금 채굴자들 (대부분 실패)</div>
+</div>
+</div>
+<div class="section-winner">
+<i class="fas fa-tshirt bg-icon" style="color: #fbbf24;"></i>
+<div class="role-label" style="color: #fbbf24;">The Merchant (Winner)</div>
+<div class="winner-name">Levi Strauss</div>
+<div class="winner-desc">청바지 판매로 글로벌 제국 건설</div>
+<div class="stat-pill">
+<i class="fas fa-coins"></i> $6.2B Revenue (2024)
+                        </div>
+</div>
+</div>
+</div>
+<!-- 2026 Card -->
+<div class="card purple">
+<div class="card-header">2026 Vibe Coding Rush</div>
+<div class="card-body">
+<div class="section-loser">
+<div class="icon-box"><i class="fas fa-laptop-code"></i></div>
+<div>
+<div class="role-label">The Crowd (Users)</div>
+<div class="entity-text">앱 개발자들 (무한 경쟁)</div>
+</div>
+</div>
+<div class="section-winner">
+<i class="fas fa-server bg-icon" style="color: #a78bfa;"></i>
+<div class="role-label" style="color: #a78bfa;">The Infrastructure (Winner)</div>
+<div class="winner-name">VeryCloud</div>
+<div class="winner-desc">AWS, Vercel을 잇는 차세대 인프라</div>
+<div class="stat-pill">
+<i class="fas fa-rocket"></i> Next Unicorn Opportunity
+                        </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Insight -->
+<div class="insight-box">
+<i class="fas fa-lightbulb insight-icon"></i>
+<div class="insight-content">
+<p style="margin: 0;">
+<span class="highlight-brand">VeryCloud</span>는 바이브코딩 시대의 <strong>'청바지 상인'</strong>입니다. 
+                    우리는 금을 캐지 않습니다. <span style="color: #34d399; font-weight: 700;">금을 캐는 도구를 팝니다.</span>
+                    이것이 우리가 실패할 수 없는 이유입니다.
+                </p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VeryCloud Pitch Deck - Vision</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #020617; /* Slate 950 */
+            overflow: hidden;
+            width: 1280px;
+            height: 720px;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #020617;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        /* Background Ambient Glow (No Gradients) */
+        .glow-top-center {
+            position: absolute;
+            width: 800px;
+            height: 500px;
+            background-color: rgba(139, 92, 246, 0.08); /* Violet */
+            border-radius: 50%;
+            filter: blur(120px);
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+
+        .glow-bottom-left {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background-color: rgba(59, 130, 246, 0.05); /* Blue */
+            border-radius: 50%;
+            filter: blur(100px);
+            bottom: -150px;
+            left: -150px;
+            z-index: 0;
+        }
+
+        .glow-bottom-right {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background-color: rgba(16, 185, 129, 0.05); /* Emerald */
+            border-radius: 50%;
+            filter: blur(100px);
+            bottom: -150px;
+            right: -150px;
+            z-index: 0;
+        }
+
+        /* Content Layout */
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            padding: 0 60px;
+            text-align: center;
+        }
+
+        /* Vision Text Section */
+        .vision-section {
+            margin-bottom: 60px; /* Reduced from 80px */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .label-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 9999px;
+            color: #c4b5fd;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.1em;
+        }
+
+        .main-vision {
+            font-size: 56px; /* Reduced from 72px as requested */
+            font-weight: 900;
+            line-height: 1.1;
+            color: #ffffff;
+            margin: 0 0 20px 0;
+            letter-spacing: -0.02em;
+        }
+
+        .highlight {
+            color: #a78bfa;
+            position: relative;
+            display: inline-block;
+        }
+
+        .sub-vision {
+            font-size: 22px;
+            color: #94a3b8;
+            font-weight: 300;
+            max-width: 800px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Roadmap Timeline Section */
+        .roadmap-container {
+            width: 100%;
+            max-width: 1000px;
+            position: relative;
+            margin-bottom: 50px; /* Reduced from 60px */
+        }
+
+        /* Timeline Line */
+        .timeline-line {
+            position: absolute;
+            top: 24px;
+            left: 50px;
+            right: 50px;
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.1);
+            z-index: 0;
+        }
+
+        .timeline-progress {
+            position: absolute;
+            top: 24px;
+            left: 50px;
+            width: 35%; /* Progress indicator */
+            height: 2px;
+            background-color: #a78bfa;
+            box-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+            z-index: 0;
+        }
+
+        .steps-wrapper {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 280px;
+        }
+
+        .step-icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #0f172a;
+            border: 2px solid #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+            color: #64748b;
+            font-size: 20px;
+        }
+
+        .step-item.active .step-icon-box {
+            border-color: #a78bfa;
+            background-color: rgba(139, 92, 246, 0.1);
+            color: #a78bfa;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .step-item.future .step-icon-box {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .step-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin: 0 0 8px 0;
+        }
+
+        .step-item.active .step-title {
+            color: #a78bfa;
+        }
+
+        .step-desc {
+            font-size: 14px;
+            color: #64748b;
+            text-align: center;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .step-item.active .step-desc {
+            color: #94a3b8;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 24px 40px;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            backdrop-filter: blur(10px);
+            width: 900px;
+            margin-top: 10px;
+        }
+
+        .contact-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: #64748b;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .contact-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #f8fafc;
+        }
+
+        .contact-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background-color: rgba(139, 92, 246, 0.1);
+            color: #a78bfa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .contact-text {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .contact-sub {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        .divider {
+            width: 1px;
+            height: 32px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Decorative Elements */
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background Ambient Glow -->
+<div class="glow-top-center"></div>
+<div class="glow-bottom-left"></div>
+<div class="glow-bottom-right"></div>
+<!-- Stars Decoration (Static) -->
+<div class="star" style="width: 2px; height: 2px; top: 15%; left: 10%;"></div>
+<div class="star" style="width: 3px; height: 3px; top: 25%; right: 15%;"></div>
+<div class="star" style="width: 2px; height: 2px; top: 60%; left: 5%;"></div>
+<div class="star" style="width: 2px; height: 2px; bottom: 20%; right: 10%;"></div>
+<main class="content-wrapper">
+<!-- Vision Section -->
+<div class="vision-section">
+<div class="label-badge">
+<i class="fas fa-eye" style="margin-right: 8px;"></i> OUR VISION
+                </div>
+<div class="main-vision">
+<p>누구나 만들고,</p>
+<p class="highlight">누구나 배포하는 세상</p>
+</div>
+<p class="sub-vision">
+                    "배포는 더 이상 기술 장벽이 되어서는 안 됩니다."<br/>
+                    아이디어가 코드로, 코드가 현실로 이어지는 시간을 0에 수렴하게 만듭니다.
+                </p>
+</div>
+<!-- Roadmap Section -->
+<div class="roadmap-container">
+<div class="timeline-line"></div>
+<div class="timeline-progress"></div>
+<div class="steps-wrapper">
+<!-- Phase 1 -->
+<div class="step-item active">
+<div class="step-icon-box">
+<i class="fas fa-cloud"></i>
+</div>
+<h3 class="step-title">Phase 1: Cloud Native</h3>
+<p class="step-desc">
+                            AWS/GCP 기반 완전 자동화<br/>
+                            바이브코딩 전용 CLI &amp; Agent
+                        </p>
+</div>
+<!-- Phase 2 -->
+<div class="step-item active">
+<div class="step-icon-box">
+<i class="fas fa-server"></i>
+</div>
+<h3 class="step-title">Phase 2: Hybrid Core</h3>
+<p class="step-desc">
+                            물리서버 도입으로 비용 혁신<br/>
+                            하이브리드 인프라 구축 (10K+)
+                        </p>
+</div>
+<!-- Phase 3 -->
+<div class="step-item future">
+<div class="step-icon-box">
+<i class="fas fa-globe-asia"></i>
+</div>
+<h3 class="step-title">Phase 3: Global Edge</h3>
+<p class="step-desc">
+                            전 세계 5개 리전 확장<br/>
+                            글로벌 배포 생태계 완성
+                        </p>
+</div>
+</div>
+</div>
+<!-- Contact Section (Replaced Beta CTA) -->
+<div class="contact-container">
+<div class="contact-label">CONTACT US</div>
+<div class="contact-grid">
+<!-- Company -->
+<div class="contact-item">
+<div class="contact-icon">
+<i class="fas fa-building"></i>
+</div>
+<div>
+<div class="contact-text">Very Labs</div>
+<div class="contact-sub">Company</div>
+</div>
+</div>
+<div class="divider"></div>
+<!-- Name -->
+<div class="contact-item">
+<div class="contact-icon">
+<i class="fas fa-user"></i>
+</div>
+<div>
+<div class="contact-text">고광현</div>
+<div class="contact-sub">Founder</div>
+</div>
+</div>
+<div class="divider"></div>
+<!-- Phone -->
+<div class="contact-item">
+<div class="contact-icon">
+<i class="fas fa-phone"></i>
+</div>
+<div>
+<div class="contact-text">+82-10-4119-7091</div>
+<div class="contact-sub">Direct</div>
+</div>
+</div>
+<div class="divider"></div>
+<!-- Email -->
+<div class="contact-item">
+<div class="contact-icon">
+<i class="fas fa-envelope"></i>
+</div>
+<div>
+<div class="contact-text">bryan@verylabs.io</div>
+<div class="contact-sub">Email</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body>
+</html>

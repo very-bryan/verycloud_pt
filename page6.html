@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VeryCloud Pitch Deck - Competitive Comparison</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #020617; /* Slate 950 */
+            overflow: hidden;
+            width: 1280px;
+            height: 720px;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #020617;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        /* Background Effects */
+        .grid-pattern {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.4;
+            z-index: 0;
+        }
+
+        .bg-glow-red {
+            position: absolute;
+            top: -100px;
+            left: 20%;
+            width: 500px;
+            height: 500px;
+            background-color: rgba(239, 68, 68, 0.05); /* Red 500 */
+            filter: blur(120px);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .bg-glow-green {
+            position: absolute;
+            bottom: -100px;
+            right: 10%;
+            width: 600px;
+            height: 600px;
+            background-color: rgba(16, 185, 129, 0.08); /* Emerald 500 */
+            filter: blur(120px);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        /* Content Layout */
+        .content-wrapper {
+            flex: 1;
+            padding: 36px 60px; /* Reduced padding slightly */
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        /* Header */
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 24px; /* Reduced margin */
+        }
+
+        .label-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 14px;
+            background-color: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 9999px;
+            color: #60a5fa;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.05em;
+        }
+
+        .main-title {
+            font-size: 32px; /* Slightly smaller for better fit */
+            font-weight: 800;
+            color: #f8fafc;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .highlight-text {
+            color: #34d399;
+            position: relative;
+        }
+
+        /* Comparison Grid */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 0.8fr 1fr 1fr 1fr 1.2fr; /* Label, 3 Competitors, VeryCloud */
+            gap: 12px; /* Reduced gap */
+            flex: 1;
+            margin-bottom: 20px;
+        }
+
+        /* Column Styles */
+        .col-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            background-color: rgba(30, 41, 59, 0.4);
+            border-radius: 12px 12px 0 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: none;
+            height: 70px; /* Reduced height */
+        }
+
+        .col-header img, .col-header i {
+            font-size: 22px;
+            margin-bottom: 6px;
+            color: #cbd5e1;
+        }
+        
+        .col-header span {
+            font-size: 14px;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+
+        .grid-cell {
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background-color: rgba(15, 23, 42, 0.4);
+            position: relative;
+            height: 88px; /* Reduced height to fit 4 rows */
+            transition: all 0.2s;
+        }
+
+        .grid-cell:first-child { border-radius: 12px 12px 0 0; }
+        .grid-cell:last-child { border-radius: 0 0 12px 12px; }
+
+        /* Label Column (First Column) */
+        .col-labels .grid-cell {
+            align-items: flex-start;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 13px;
+            padding-left: 0;
+        }
+        .col-labels .grid-cell:last-child { border-bottom: none; }
+        .col-labels .col-header { background: transparent; border: none; align-items: flex-start; padding-left: 0; }
+
+        /* VeryCloud Column (Highlighted) */
+        .col-verycloud .col-header {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-bottom: none;
+        }
+        .col-verycloud .col-header span { color: #34d399; }
+        
+        .col-verycloud .grid-cell {
+            background-color: rgba(16, 185, 129, 0.03);
+            border-left: 1px solid rgba(16, 185, 129, 0.2);
+            border-right: 1px solid rgba(16, 185, 129, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .col-verycloud .grid-cell:last-child {
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        /* Status Indicators */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .status-desc {
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+        }
+
+        .status-green { color: #34d399; }
+        .status-red { color: #ef4444; }
+        .status-yellow { color: #fbbf24; }
+        .status-gray { color: #64748b; }
+
+        .traffic-light {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        /* Bottom Insight Box */
+        .insight-box {
+            background: linear-gradient(90deg, rgba(30, 41, 59, 0.6) 0%, rgba(16, 185, 129, 0.1) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        .insight-formula {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            color: #cbd5e1;
+        }
+
+        .formula-part {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(15, 23, 42, 0.6);
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .operator { color: #64748b; font-weight: 700; }
+
+        .formula-result {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #34d399;
+            font-weight: 800;
+            padding: 6px 16px;
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background -->
+<div class="grid-pattern"></div>
+<div class="bg-glow-red"></div>
+<div class="bg-glow-green"></div>
+<div class="content-wrapper">
+<!-- Header -->
+<header class="header-section">
+<div>
+<div class="label-badge">
+<i class="fas fa-balance-scale-right" style="margin-right: 8px;"></i> COMPETITIVE ANALYSIS
+                </div>
+<h1 class="main-title">
+<p>왜 VeryCloud인가? — <span class="highlight-text">경쟁 플랫폼 비교</span></p>
+</h1>
+</div>
+<div style="text-align: right; color: #94a3b8; font-size: 14px;">
+<p style="margin: 0;">Fly.io의 비용 효율과 Vercel의 편리함을 하나로</p>
+</div>
+</header>
+<!-- Main Comparison Grid -->
+<div class="comparison-grid">
+<!-- Labels -->
+<div class="col-labels">
+<div class="col-header"></div>
+<!-- 1. UX -->
+<div class="grid-cell">
+<p style="margin: 0;">UX / Performance</p>
+<p style="margin: 4px 0 0 0; font-size: 11px; color: #64748b;">초기 로딩 속도</p>
+</div>
+<!-- 2. Database -->
+<div class="grid-cell">
+<p style="margin: 0;">Database</p>
+<p style="margin: 4px 0 0 0; font-size: 11px; color: #64748b;">DB 포함 여부</p>
+</div>
+<!-- 3. Traffic Cost -->
+<div class="grid-cell">
+<p style="margin: 0;">Traffic Cost</p>
+<p style="margin: 4px 0 0 0; font-size: 11px; color: #64748b;">Egress 비용 (GB당)</p>
+</div>
+<!-- 4. Deployment -->
+<div class="grid-cell">
+<p style="margin: 0;">Deployment</p>
+<p style="margin: 4px 0 0 0; font-size: 11px; color: #64748b;">설정 복잡도</p>
+</div>
+</div>
+<!-- Fly.io -->
+<div class="col-competitor">
+<div class="col-header">
+<i class="fas fa-paper-plane" style="color: #a78bfa;"></i>
+<span>Fly.io</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-red">
+<div class="traffic-light" style="background-color: #ef4444;"></div>
+                        Cold Start
+                    </div>
+<span class="status-desc">5~30초 대기 (이탈 위험)</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-yellow">
+<div class="traffic-light" style="background-color: #fbbf24;"></div>
+                        Separate VM
+                    </div>
+<span class="status-desc">별도 VM 실행 필요<br/>추가 비용 발생</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-green">
+<div class="traffic-light" style="background-color: #10b981;"></div>
+                        $0.02 / GB
+                    </div>
+<span class="status-desc">매우 저렴함</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-yellow">
+<div class="traffic-light" style="background-color: #fbbf24;"></div>
+                        Config Hell
+                    </div>
+<span class="status-desc">TOML 설정 등 복잡함</span>
+</div>
+</div>
+<!-- Vercel / Netlify -->
+<div class="col-competitor">
+<div class="col-header">
+<i class="fas fa-triangle-exclamation" style="color: #cbd5e1;"></i>
+<span>Vercel / Netlify</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-green">
+<div class="traffic-light" style="background-color: #10b981;"></div>
+                        Fast
+                    </div>
+<span class="status-desc">Edge Network 활용</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-red">
+<div class="traffic-light" style="background-color: #ef4444;"></div>
+                        3rd Party
+                    </div>
+<span class="status-desc">서드파티(Neon) 연동<br/>별도 과금 구조</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-red">
+<div class="traffic-light" style="background-color: #ef4444;"></div>
+                        $0.40+ / GB
+                    </div>
+<span class="status-desc">비용 폭탄 위험<br/>(업계 최고가)</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-green">
+<div class="traffic-light" style="background-color: #10b981;"></div>
+                        Easy
+                    </div>
+<span class="status-desc">Git Push 자동화</span>
+</div>
+</div>
+<!-- Render / Railway -->
+<div class="col-competitor">
+<div class="col-header">
+<i class="fas fa-server" style="color: #94a3b8;"></i>
+<span>Render / Railway</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-yellow">
+<div class="traffic-light" style="background-color: #fbbf24;"></div>
+                        Average
+                    </div>
+<span class="status-desc">일반적인 속도</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-green">
+<div class="traffic-light" style="background-color: #10b981;"></div>
+                        Included
+                    </div>
+<span class="status-desc">일부 플랜 포함</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-yellow">
+<div class="traffic-light" style="background-color: #fbbf24;"></div>
+                        $0.10 / GB
+                    </div>
+<span class="status-desc">평균 수준</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-yellow">
+<div class="traffic-light" style="background-color: #fbbf24;"></div>
+                        Medium
+                    </div>
+<span class="status-desc">일부 설정 필요</span>
+</div>
+</div>
+<!-- VeryCloud (Winner) -->
+<div class="col-verycloud">
+<div class="col-header">
+<i class="fas fa-rocket" style="color: #34d399;"></i>
+<span>VeryCloud</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-green" style="font-size: 15px;">
+<i class="fas fa-check-circle" style="margin-right: 6px;"></i>
+                        Always Running
+                    </div>
+<span class="status-desc" style="color: #a7f3d0;">콜드스타트 없음 (0초)<br/>즉시 반응형 UX</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-green" style="font-size: 15px;">
+<i class="fas fa-star" style="margin-right: 6px; color: #fbbf24;"></i>
+                        Fully Included
+                    </div>
+<span class="status-desc" style="color: #a7f3d0;">PG/MySQL/Redis 무료<br/>(플랜 리소스 내)</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-green" style="font-size: 15px;">
+<i class="fas fa-check-circle" style="margin-right: 6px;"></i>
+                        $0.10 ~ 0.15
+                    </div>
+<span class="status-desc" style="color: #a7f3d0;">합리적인 가격 구조<br/>(Vercel 대비 1/3)</span>
+</div>
+<div class="grid-cell">
+<div class="status-badge status-green" style="font-size: 15px;">
+<i class="fas fa-check-circle" style="margin-right: 6px;"></i>
+                        Intent-based
+                    </div>
+<span class="status-desc" style="color: #a7f3d0;">"배포해줘" 한마디<br/>Zero Configuration</span>
+</div>
+</div>
+</div>
+<!-- Bottom Insight -->
+<div class="insight-box">
+<div style="display: flex; align-items: center; gap: 12px;">
+<i class="fas fa-lightbulb" style="color: #fbbf24; font-size: 20px;"></i>
+<span style="color: #f1f5f9; font-weight: 700;">Winning Formula</span>
+</div>
+<div class="insight-formula">
+<div class="formula-part">
+<i class="fas fa-check-circle" style="color: #34d399;"></i>
+<span>Vercel의 편리함</span>
+</div>
+<span class="operator">+</span>
+<div class="formula-part">
+<i class="fas fa-coins" style="color: #60a5fa;"></i>
+<span>Fly.io의 비용 효율</span>
+</div>
+<span class="operator">=</span>
+<div class="formula-result">
+<i class="fas fa-rocket"></i> VeryCloud
+                </div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

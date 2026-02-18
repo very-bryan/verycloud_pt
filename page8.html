@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VeryCloud Pitch Deck - Profitability Simulation</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #020617;
+    overflow: hidden;
+    width: 1280px;
+    height: 720px;
+  }
+  .slide-container {
+    width: 1280px;
+    height: 720px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #020617;
+    color: #ffffff;
+    overflow: hidden;
+  }
+  .dot-pattern {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=');
+    opacity: 0.5; z-index: 0;
+  }
+  .bg-glow-purple {
+    position: absolute; top: -200px; left: 200px; width: 600px; height: 600px;
+    background-color: rgba(139, 92, 246, 0.08); filter: blur(120px); border-radius: 50%; z-index: 0;
+  }
+  .bg-glow-green {
+    position: absolute; bottom: -200px; right: 200px; width: 600px; height: 600px;
+    background-color: rgba(16, 185, 129, 0.08); filter: blur(120px); border-radius: 50%; z-index: 0;
+  }
+  .content-wrapper {
+    flex: 1;
+    padding: 30px 45px;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+  }
+  .header-section {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 18px;
+  }
+  .label-badge {
+    display: inline-flex; align-items: center; padding: 6px 14px;
+    background-color: rgba(167, 139, 250, 0.1);
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    border-radius: 9999px; color: #a78bfa;
+    font-size: 13px; font-weight: 700; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em;
+  }
+  .main-title { font-size: 32px; font-weight: 800; color: #f8fafc; margin: 8px 0 0 0; line-height: 1.2; }
+  .highlight-purple { color: #a78bfa; }
+  .highlight-green { color: #34d399; }
+  .main-layout { display: flex; flex-direction: column; gap: 18px; flex: 1; }
+  .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .summary-card {
+    background-color: rgba(30, 41, 59, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px; padding: 14px;
+    display: flex; flex-direction: column; position: relative;
+  }
+  .summary-card.highlight { background-color: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.3); }
+  .user-count { font-size: 14px; color: #94a3b8; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .user-icon { color: #64748b; }
+  .summary-card.highlight .user-icon { color: #34d399; }
+  .summary-card.highlight .user-count { color: #f1f5f9; }
+  .metric-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; font-size: 12px; color: #cbd5e1; }
+  .metric-label { color: #94a3b8; }
+  .metric-val { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+  .arr-highlight { color: #f8fafc; font-size: 14px; margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+  .margin-val { font-weight: 800; }
+  .margin-low { color: #fbbf24; }
+  .margin-high { color: #34d399; }
+  .charts-row { display: flex; gap: 18px; flex: 1.5; min-height: 0; }
+  .chart-container {
+    flex: 1; background-color: rgba(15, 23, 42, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 16px;
+    display: flex; flex-direction: column; position: relative;
+  }
+  .chart-title {
+    font-size: 13px; font-weight: 700; color: #94a3b8; margin-bottom: 8px;
+    text-transform: uppercase; letter-spacing: 0.05em; display: flex; justify-content: space-between;
+  }
+  .insights-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; height: 76px; }
+  .insight-card {
+    background-color: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; gap: 10px;
+  }
+  .insight-icon-box { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
+  .icon-warning { background: rgba(245, 158, 11, 0.1); color: #fbbf24; }
+  .icon-success { background: rgba(16, 185, 129, 0.1); color: #34d399; }
+  .icon-info { background: rgba(139, 92, 246, 0.1); color: #a78bfa; }
+  .insight-text { font-size: 12px; color: #cbd5e1; line-height: 1.35; }
+  .insight-text strong { color: #f1f5f9; display: block; margin-bottom: 2px; }
+</style>
+</head>
+<body>
+<div class="slide-container">
+<div class="dot-pattern"></div>
+<div class="bg-glow-purple"></div>
+<div class="bg-glow-green"></div>
+<div class="content-wrapper">
+<header class="header-section">
+<div>
+<div class="label-badge">
+<i class="fas fa-chart-pie" style="margin-right: 8px;"></i>
+<p style="margin:0;">PROFITABILITY SIMULATION</p>
+</div>
+<h1 class="main-title">
+<p>수익성 시뮬레이션 — <span class="highlight-purple">1K</span> → <span class="highlight-green">50K 유저</span></p>
+</h1>
+</div>
+<div style="text-align: right;">
+<p style="color: #94a3b8; font-size: 14px; margin: 0;">Always Running GCP 기준<br/><span style="color:#cbd5e1;">Opex = Infra + 인건비 + 마케팅 등</span></p>
+</div>
+</header>
+<div class="main-layout">
+<!-- Top Row: 3-Stage Summary -->
+<div class="summary-grid">
+<!-- 1K -->
+<div class="summary-card" style="border-color: rgba(245, 158, 11, 0.2);">
+<div class="user-count"><i class="fas fa-users user-icon"></i><p style="margin:0;"> 1,000 Users</p></div>
+<div class="metric-row arr-highlight">
+<p class="metric-label" style="margin:0;">ARR</p>
+<p class="metric-val" style="margin:0;">$136K</p>
+</div>
+<div class="metric-row">
+<p class="metric-label" style="margin:0;">Infra Cost</p>
+<p class="metric-val" style="margin:0;">18.9%</p>
+</div>
+<div class="metric-row">
+<p class="metric-label" style="margin:0;">Opex Total</p>
+<p class="metric-val" style="margin:0;">71.8%</p>
+</div>
+<div class="metric-row">
+<p class="metric-label" style="margin:0;">Margin</p>
+<p class="metric-val margin-val margin-low" style="margin:0;">28.2%</p>
+</div>
+</div>
+<!-- 10K -->
+<div class="summary-card highlight">
+<div class="user-count"><i class="fas fa-city user-icon"></i><p style="margin:0;"> 10,000 Users</p></div>
+<div class="metric-row arr-highlight">
+<p class="metric-label" style="margin:0;">ARR</p>
+<p class="metric-val" style="margin:0;">$1.66M</p>
+</div>
+<div class="metric-row">
+<p class="metric-label" style="margin:0;">Infra Cost</p>
+<p class="metric-val" style="margin:0;">18.1%</p>
+</div>
+<div class="metric-row">
+<p class="metric-label" style="margin:0;">Opex Total</p>
+<p class="metric-val" style="margin:0;">58.0%</p>
+</div>
+<div class="metric-row">
+<p class="metric-label" style="margin:0;">Margin</p>
+<p class="metric-val margin-val margin-high" style="margin:0;">42.0%</p>
+</div>
+</div>
+<!-- 50K -->
+<div class="summary-card highlight">
+<div class="user-count"><i class="fas fa-globe user-icon"></i><p style="margin:0;"> 50,000 Users</p></div>
+<div class="metric-row arr-highlight">
+<p class="metric-label" style="margin:0;">ARR</p>
+<p class="metric-val" style="margin:0;">$9.36M</p>
+</div>
+<div class="metric-row">
+<p class="metric-label" style="margin:0;">Infra Cost</p>
+<p class="metric-val" style="margin:0;">16.9%</p>
+</div>
+<div class="metric-row">
+<p class="metric-label" style="margin:0;">Opex Total</p>
+<p class="metric-val" style="margin:0;">33.6%</p>
+</div>
+<div class="metric-row">
+<p class="metric-label" style="margin:0;">Margin</p>
+<p class="metric-val margin-val margin-high" style="margin:0;">66.4%</p>
+</div>
+</div>
+</div>
+<!-- Middle Row: Charts -->
+<div class="charts-row">
+<!-- ARR Growth Chart -->
+<div class="chart-container">
+<div class="chart-title">
+<p style="margin:0;">ARR Growth</p>
+<p style="margin:0; color: #34d399;">$136K → $9.36M</p>
+</div>
+<div style="flex: 1; position: relative; min-height: 0;">
+<canvas id="arrChart"></canvas>
+</div>
+</div>
+<!-- Margin Trend Chart -->
+<div class="chart-container">
+<div class="chart-title">
+<p style="margin:0;">Operating Margin Trend</p>
+<p style="margin:0; color: #a78bfa;">28% → 66%</p>
+</div>
+<div style="flex: 1; position: relative; min-height: 0;">
+<canvas id="marginChart"></canvas>
+</div>
+</div>
+</div>
+<!-- Bottom Row: Insights -->
+<div class="insights-row">
+<div class="insight-card">
+<div class="insight-icon-box icon-warning">
+<i class="fas fa-exclamation-triangle"></i>
+</div>
+<div class="insight-text">
+<strong>Valley of Death (1K)</strong>
+<p>인건비 투입 시작으로 마진 28% 최저점. 이 구간을 넘어서는 것이 핵심.</p>
+</div>
+</div>
+<div class="insight-card">
+<div class="insight-icon-box icon-success">
+<i class="fas fa-rocket"></i>
+</div>
+<div class="insight-text">
+<strong>Profitability Scale (10K+)</strong>
+<p>본격적 수익 구간 진입 (42% → 66%). 트래픽 초과 수익 발생 시작.</p>
+</div>
+</div>
+<div class="insight-card">
+<div class="insight-icon-box icon-info">
+<i class="fas fa-server"></i>
+</div>
+<div class="insight-text">
+<strong>Stable Infrastructure</strong>
+<p>Always-Running 방식에도 인프라 비율 17~19%로 안정적 유지.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  Chart.defaults.font.family = "'JetBrains Mono', 'Noto Sans KR', sans-serif";
+  Chart.defaults.color = '#64748b';
+  Chart.defaults.scale.grid.color = 'rgba(255, 255, 255, 0.05)';
+
+  // ARR Chart (1K, 10K, 50K)
+  const arrCtx = document.getElementById('arrChart').getContext('2d');
+  const arrGradient = arrCtx.createLinearGradient(0, 0, 0, 200);
+  arrGradient.addColorStop(0, 'rgba(52, 211, 153, 0.4)');
+  arrGradient.addColorStop(1, 'rgba(52, 211, 153, 0.0)');
+  new Chart(arrCtx, {
+    type: 'line',
+    data: {
+      labels: ['1K', '10K', '50K'],
+      datasets: [{
+        label: 'ARR ($)',
+        data: [136000, 1660000, 9360000],
+        borderColor: '#34d399',
+        backgroundColor: arrGradient,
+        borderWidth: 3,
+        tension: 0.3,
+        fill: true,
+        pointBackgroundColor: '#10b981',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 5
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: {
+          ticks: {
+            callback: function(value) {
+              if (value >= 1000000) return '$' + (value/1000000).toFixed(1) + 'M';
+              if (value >= 1000) return '$' + (value/1000).toFixed(0) + 'K';
+              return '$' + value;
+            }
+          }
+        }
+      }
+    }
+  });
+
+  // Margin Chart (1K, 10K, 50K)
+  const marginCtx = document.getElementById('marginChart').getContext('2d');
+  new Chart(marginCtx, {
+    type: 'bar',
+    data: {
+      labels: ['1K Users', '10K Users', '50K Users'],
+      datasets: [{
+        label: 'Margin %',
+        data: [28.2, 42.0, 66.4],
+        backgroundColor: [
+          'rgba(239, 68, 68, 0.6)',
+          'rgba(167, 139, 250, 0.6)',
+          'rgba(52, 211, 153, 0.8)'
+        ],
+        borderColor: ['#ef4444', '#a78bfa', '#34d399'],
+        borderWidth: 2,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, max: 100, ticks: { callback: (v) => v + '%' } }
+      }
+    }
+  });
+</script>
+</body>
+</html>

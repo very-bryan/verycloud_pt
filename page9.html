@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VeryCloud Pitch Deck - GCP Architecture Scaling</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Noto+Sans+KR:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #020617; /* Slate 950 */
+            overflow: hidden;
+            width: 1280px;
+            height: 720px;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #020617;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        /* Background Effects */
+        .dot-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoNTYsIDE4OSwgMjQ4LCAwLjEpIi8+PC9zdmc+'); /* Cyan dots */
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .bg-glow-blue {
+            position: absolute;
+            top: -10%;
+            right: -5%;
+            width: 600px;
+            height: 600px;
+            background-color: rgba(59, 130, 246, 0.08); /* Blue */
+            filter: blur(100px);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .bg-glow-cyan {
+            position: absolute;
+            bottom: -10%;
+            left: -5%;
+            width: 600px;
+            height: 600px;
+            background-color: rgba(6, 182, 212, 0.08); /* Cyan */
+            filter: blur(100px);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        /* Header */
+        .header-section {
+            padding: 30px 60px 0 60px;
+            z-index: 10;
+            margin-bottom: 20px;
+        }
+
+        .label-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 14px;
+            background-color: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 9999px;
+            color: #22d3ee;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .main-title {
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #f8fafc;
+            margin: 0;
+        }
+
+        .highlight-text {
+            color: #22d3ee; /* Cyan */
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 16px;
+            margin: 6px 0 0 0;
+        }
+
+        /* Content Layout */
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 0 60px 40px 60px;
+            flex: 1;
+            z-index: 10;
+            height: 100%;
+        }
+
+        /* Card Styles */
+        .glass-card {
+            background-color: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(4px);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(34, 211, 238, 0.3);
+            transform: translateY(-2px);
+            background-color: rgba(30, 41, 59, 0.6);
+        }
+
+        .card-top {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: linear-gradient(to bottom, rgba(255,255,255,0.03), transparent);
+        }
+
+        .user-count {
+            font-size: 20px;
+            font-weight: 800;
+            color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .user-count i {
+            font-size: 16px;
+            color: #22d3ee;
+        }
+
+        .stage-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        /* Diagram Area */
+        .diagram-area {
+            flex: 1;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: center;
+            background-color: rgba(15, 23, 42, 0.3);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Schematic Boxes */
+        .schematic-box {
+            border: 1px solid;
+            background-color: rgba(15, 23, 42, 0.8);
+            border-radius: 6px;
+            padding: 8px;
+            position: relative;
+            font-size: 10px;
+            color: #cbd5e1;
+        }
+        
+        /* Box Colors per Stage */
+        .box-stage-1 { border-color: rgba(148, 163, 184, 0.4); }
+        .box-stage-2 { border-color: rgba(56, 189, 248, 0.4); }
+        .box-stage-3 { border-color: rgba(6, 182, 212, 0.5); }
+        .box-stage-4 { border-color: rgba(167, 139, 250, 0.5); }
+
+        .schematic-label {
+            position: absolute;
+            top: -8px;
+            left: 8px;
+            background-color: #0f172a;
+            padding: 0 4px;
+            font-size: 9px;
+            font-weight: 700;
+            color: #94a3b8;
+        }
+
+        .inner-box {
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 4px;
+            padding: 4px;
+            margin-top: 4px;
+            text-align: center;
+            font-size: 9px;
+            color: #94a3b8;
+        }
+
+        .stack-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #22d3ee;
+            color: #0f172a;
+            font-weight: 800;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .connection-line {
+            height: 12px;
+            width: 1px;
+            background-color: #475569;
+            margin: 0 auto;
+        }
+
+        /* Bottom Details */
+        .card-bottom {
+            padding: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background-color: rgba(15, 23, 42, 0.4);
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #cbd5e1;
+            margin-bottom: 4px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .spec-icon {
+            color: #64748b;
+            width: 14px;
+            text-align: center;
+        }
+
+        .cost-display {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .cost-label {
+            font-size: 10px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .cost-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: #38bdf8; /* Sky Blue */
+        }
+        
+        .spot-badge {
+            font-size: 9px;
+            background-color: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            padding: 1px 4px;
+            border-radius: 2px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background Elements -->
+<div class="dot-pattern"></div>
+<div class="bg-glow-blue"></div>
+<div class="bg-glow-cyan"></div>
+<!-- Header -->
+<header class="header-section">
+<div>
+<div class="label-badge">
+<i class="fas fa-network-wired" style="margin-right: 8px;"></i> GCP SCALING
+                </div>
+<h1 class="main-title">
+                    규모별 <span class="highlight-text">GCP 아키텍처</span> 로드맵
+                </h1>
+<p class="subtitle">
+                    사용자 규모에 따라 단일 VM에서 멀티 리전 클러스터까지 유연하게 확장되는 인프라 구조
+                </p>
+</div>
+</header>
+<!-- Content Grid -->
+<div class="content-wrapper">
+<!-- Stage 1: 100 Users -->
+<div class="glass-card">
+<div class="card-top">
+<div class="user-count"><i class="fas fa-user"></i> 100</div>
+<div class="stage-label">MVP / Early Stage</div>
+</div>
+<div class="diagram-area">
+<!-- Diagram -->
+<div class="schematic-box box-stage-1" style="height: 100%; display: flex; flex-direction: column;">
+<span class="schematic-label" style="color: #94a3b8;">e2-highmem-4</span>
+<div style="flex: 1; display: flex; gap: 4px; margin-bottom: 4px;">
+<div class="inner-box" style="flex: 1;">API</div>
+<div class="inner-box" style="flex: 1;">Traefik</div>
+</div>
+<div class="inner-box" style="flex: 2; border-style: solid; border-color: rgba(148,163,184,0.3); color: #e2e8f0;">
+                            User Apps<br/>
+<span style="font-size: 8px; opacity: 0.7;">(97 containers)</span>
+</div>
+<div class="connection-line"></div>
+<div class="inner-box">SQLite + Shared DB</div>
+<div class="inner-box" style="margin-top: auto; font-size: 8px;">pd-balanced 450GB</div>
+</div>
+</div>
+<div class="card-bottom">
+<div class="spec-item"><i class="fas fa-microchip spec-icon"></i> 4 vCPU / 32GB</div>
+<div class="spec-item"><i class="fas fa-server spec-icon"></i> Single VM</div>
+<div class="cost-display">
+<span class="cost-label">Monthly</span>
+<span class="cost-value" style="color: #94a3b8;">$178</span>
+</div>
+</div>
+</div>
+<!-- Stage 2: 1,000 Users -->
+<div class="glass-card">
+<div class="card-top">
+<div class="user-count"><i class="fas fa-users"></i> 1,000</div>
+<div class="stage-label">Growth Stage</div>
+</div>
+<div class="diagram-area">
+<!-- Diagram -->
+<div style="display: flex; gap: 4px; height: 60%;">
+<div class="schematic-box box-stage-2" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+<span class="schematic-label" style="color: #38bdf8;">App Node</span>
+<span class="stack-badge" style="background: #38bdf8;">x3</span>
+<div style="text-align: center;">
+<i class="fas fa-cube" style="color: #38bdf8; opacity: 0.5;"></i><br/>Apps<br/>+ DB
+                            </div>
+</div>
+</div>
+<div style="display: flex; gap: 4px; height: 35%;">
+<div class="schematic-box" style="flex: 1; border-style: dashed; border-color: #64748b;">
+<span class="schematic-label">Platform</span>
+<div style="font-size: 8px; text-align: center; margin-top: 4px;">API/LB</div>
+</div>
+<div class="schematic-box" style="flex: 1; border-color: #fbbf24; border-style: dotted;">
+<span class="schematic-label" style="color: #fbbf24;">Build</span>
+<div style="font-size: 8px; text-align: center; margin-top: 4px;">Spot VM</div>
+</div>
+</div>
+</div>
+<div class="card-bottom">
+<div class="spec-item"><i class="fas fa-microchip spec-icon"></i> 16v / 128GB (x3)</div>
+<div class="spec-item"><i class="fas fa-layer-group spec-icon"></i> 4 VM Cluster</div>
+<div class="cost-display">
+<span class="cost-label">Monthly</span>
+<span class="cost-value" style="color: #38bdf8;">$2,146</span>
+</div>
+</div>
+</div>
+<!-- Stage 3: 10,000 Users -->
+<div class="glass-card">
+<div class="card-top">
+<div class="user-count"><i class="fas fa-users-cog"></i> 10,000</div>
+<div class="stage-label">Scale-Up</div>
+</div>
+<div class="diagram-area">
+<!-- Diagram -->
+<div class="schematic-box box-stage-3" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 8px;">
+<span class="schematic-label" style="color: #22d3ee;">High-Mem Node</span>
+<span class="stack-badge" style="background: #22d3ee;">x10</span>
+<i class="fas fa-cubes" style="font-size: 24px; color: #22d3ee; margin-bottom: 4px;"></i>
+<div>~1,070 Apps/VM</div>
+</div>
+<div style="display: flex; gap: 4px;">
+<div class="schematic-box" style="flex: 1; font-size: 8px;">Platform VM</div>
+<div class="schematic-box" style="flex: 1; border-color: #fbbf24; color: #fbbf24; font-size: 8px;">
+                            2x Spot Build
+                        </div>
+</div>
+</div>
+<div class="card-bottom">
+<div class="spec-item"><i class="fas fa-microchip spec-icon"></i> 64v / 512GB (x10)</div>
+<div class="spec-item"><i class="fas fa-th-large spec-icon"></i> 10 VM Cluster</div>
+<div class="cost-display">
+<span class="cost-label">Monthly</span>
+<span class="cost-value" style="color: #22d3ee;">$25,040</span>
+</div>
+</div>
+</div>
+<!-- Stage 4: 50,000 Users -->
+<div class="glass-card" style="border-color: rgba(167, 139, 250, 0.3);">
+<div class="card-top">
+<div class="user-count" style="color: #e879f9;"><i class="fas fa-globe"></i> 50,000</div>
+<div class="stage-label" style="color: #e879f9;">Multi-Region / HA</div>
+</div>
+<div class="diagram-area">
+<!-- Diagram -->
+<div style="display: flex; height: 100%; gap: 4px;">
+<div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+<div class="schematic-box box-stage-4" style="flex: 1; border-color: #e879f9; background: rgba(232, 121, 249, 0.1);">
+<span class="schematic-label" style="color: #e879f9;">Zone A</span>
+<div style="height: 100%; display: flex; align-items: center; justify-content: center; opacity: 0.7;">
+<i class="fas fa-server"></i>
+</div>
+</div>
+<div class="schematic-box box-stage-4" style="flex: 1; border-color: #e879f9; background: rgba(232, 121, 249, 0.1);">
+<span class="schematic-label" style="color: #e879f9;">Zone B</span>
+<div style="height: 100%; display: flex; align-items: center; justify-content: center; opacity: 0.7;">
+<i class="fas fa-server"></i>
+</div>
+</div>
+<div class="schematic-box box-stage-4" style="flex: 1; border-color: #e879f9; background: rgba(232, 121, 249, 0.1);">
+<span class="schematic-label" style="color: #e879f9;">Zone C</span>
+<div style="height: 100%; display: flex; align-items: center; justify-content: center; opacity: 0.7;">
+<i class="fas fa-server"></i>
+</div>
+</div>
+</div>
+<div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+<div class="schematic-box" style="padding: 4px; text-align: center;">
+<span class="stack-badge" style="background: #e879f9; color: white;">x28</span>
+<div style="font-size: 8px; margin-top: 8px;">n2-highmem-128</div>
+</div>
+<div class="schematic-box" style="padding: 4px; text-align: center;">
+<div style="font-size: 8px;">2x HA Platform</div>
+</div>
+<div class="schematic-box" style="padding: 4px; text-align: center; border-color: #fbbf24; color: #fbbf24;">
+<div style="font-size: 8px;">5x Spot</div>
+</div>
+</div>
+</div>
+</div>
+<div class="card-bottom">
+<div class="spec-item"><i class="fas fa-microchip spec-icon"></i> 128v / 864GB</div>
+<div class="spec-item"><i class="fas fa-globe spec-icon"></i> Multi-Zone HA</div>
+<div class="cost-display">
+<span class="cost-label">Monthly</span>
+<span class="cost-value" style="color: #e879f9;">$131,950</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
