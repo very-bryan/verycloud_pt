@@ -379,6 +379,47 @@
     60% { transform: translateX(-6px); }
     80% { transform: translateX(6px); }
   }
+
+  /* Lock Screen Mobile */
+  @media (max-width: 768px) {
+    .lock-box {
+      gap: 24px;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    .lock-icon {
+      width: 52px;
+      height: 52px;
+    }
+
+    .lock-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .lock-title {
+      font-size: 20px;
+    }
+
+    .lock-subtitle {
+      font-size: 13px;
+      margin-top: -14px;
+    }
+
+    .lock-form {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .lock-input {
+      width: 100%;
+    }
+
+    .lock-submit {
+      width: 100%;
+    }
+  }
 </style>
 </head>
 <body>
