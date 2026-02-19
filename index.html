@@ -28,6 +28,7 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    touch-action: pan-x pan-y;
   }
 
   .slide-wrapper {
@@ -592,6 +593,7 @@
     pinchZoom = 1;
     pinchPanX = 0;
     pinchPanY = 0;
+    document.querySelector('.presentation').style.touchAction = 'pan-x pan-y';
     applyTransform();
   }
 
@@ -648,6 +650,8 @@
     presEl.addEventListener('touchstart', function(e) {
       if (e.touches.length === 2) {
         e.preventDefault();
+        // Disable browser touch handling during pinch
+        presEl.style.touchAction = 'none';
         isPinching = true;
         isPanning = false;
         startDist = dist(e.touches[0], e.touches[1]);
@@ -700,7 +704,11 @@
           pinchZoom = 1;
           pinchPanX = 0;
           pinchPanY = 0;
+          presEl.style.touchAction = 'pan-x pan-y';
           applyTransform();
+        } else {
+          // Zoomed in: disable browser touch handling so JS panning works
+          presEl.style.touchAction = 'none';
         }
       }
       if (e.touches.length === 1 && pinchZoom > 1.05) {
