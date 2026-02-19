@@ -167,14 +167,53 @@
     color: #fff;
   }
 
-  /* Hide controls in idle */
-  .controls, .nav-btn {
+  /* Hide controls in idle (only bottom bar, not arrows) */
+  .controls {
     transition: opacity 0.3s;
   }
 
-  body.idle .controls,
-  body.idle .nav-btn {
+  body.idle .controls {
     opacity: 0;
+  }
+
+  /* Mobile rotate hint - hidden by default */
+  .mobile-hint {
+    display: none;
+  }
+
+  /* Mobile styles */
+  @media (max-width: 768px) {
+    .nav-btn {
+      position: fixed;
+      top: auto;
+      bottom: 80px;
+      transform: none;
+      width: 44px;
+      height: 44px;
+      font-size: 18px;
+    }
+
+    .nav-prev { left: calc(50% - 60px); }
+    .nav-next { right: calc(50% - 60px); }
+
+    .mobile-hint {
+      display: block;
+      position: fixed;
+      bottom: 8px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: rgba(255,255,255,0.4);
+      font-size: 12px;
+      z-index: 100;
+      pointer-events: none;
+    }
+  }
+
+  @media (max-width: 768px) and (orientation: landscape) {
+    .mobile-hint {
+      display: none;
+    }
   }
 
   /* Progress bar */
@@ -352,6 +391,8 @@
     </svg>
   </button>
 </div>
+
+<div class="mobile-hint">화면을 가로로 돌려서 보시면 더 잘 보입니다</div>
 
 <script>
   // Password check
