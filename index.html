@@ -49,11 +49,13 @@
     width: 1280px;
     height: 720px;
     border: none;
-    opacity: 0;
+    opacity: 0.001;
     pointer-events: none;
     transition: opacity 0.4s ease;
     border-radius: 4px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
 
   .slide.active {
@@ -503,7 +505,10 @@
 
     document.getElementById('slide-' + current).classList.remove('active');
     current = n;
-    document.getElementById('slide-' + current).classList.add('active');
+    var newSlide = document.getElementById('slide-' + current);
+    // Force mobile browser to render iframe content before showing
+    newSlide.offsetHeight;
+    newSlide.classList.add('active');
 
     // Update dots
     document.querySelectorAll('.dot').forEach((d, i) => {
@@ -601,6 +606,9 @@
   }
 
   window.addEventListener('resize', scaleSlides);
+  window.addEventListener('orientationchange', function() {
+    setTimeout(scaleSlides, 100);
+  });
   scaleSlides();
 
   // Idle detection - hide controls after 3s of no mouse movement
