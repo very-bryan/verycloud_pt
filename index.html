@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>VeryCloud Pitch Deck</title>
 <meta property="og:title" content="Deploy to VeryCloud" />
 <meta property="og:description" content='Tell your AI "Deploy to VeryCloud", or type vc deploy. Done. Framework, database, SSL — all automatic.' />
@@ -485,6 +485,9 @@
   function goToSlide(n) {
     if (n < 1 || n > TOTAL || n === current) return;
 
+    // Reset pinch zoom when changing slides
+    if (pinchZoom > 1) resetZoom();
+
     document.getElementById('slide-' + current).classList.remove('active');
     current = n;
     var newSlide = document.getElementById('slide-' + current);
@@ -567,30 +570,53 @@
     return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
   }
 
+  // Base transform values (set by scaleSlides)
+  var baseScale = 1;
+  var baseLeft = 0;
+  var baseTop = 0;
+
+  // Pinch-to-zoom state
+  var pinchZoom = 1;
+  var pinchPanX = 0;
+  var pinchPanY = 0;
+
+  function applyTransform() {
+    var wrapper = document.getElementById('slideWrapper');
+    var totalScale = baseScale * pinchZoom;
+    wrapper.style.transform = 'scale(' + totalScale + ')';
+    wrapper.style.left = (baseLeft + pinchPanX) + 'px';
+    wrapper.style.top = (baseTop + pinchPanY) + 'px';
+  }
+
+  function resetZoom() {
+    pinchZoom = 1;
+    pinchPanX = 0;
+    pinchPanY = 0;
+    applyTransform();
+  }
+
   function scaleSlides() {
-    const wrapper = document.getElementById('slideWrapper');
-    const pres = document.querySelector('.presentation');
+    var pres = document.querySelector('.presentation');
 
     if (isMobilePortrait()) {
-      // Mobile portrait: fit width 100%, top-aligned
-      var scale = window.innerWidth / 1280;
-      wrapper.style.transform = 'scale(' + scale + ')';
-      wrapper.style.left = '0px';
-      wrapper.style.top = '0px';
-      pres.style.height = (720 * scale) + 'px';
+      baseScale = window.innerWidth / 1280;
+      baseLeft = 0;
+      baseTop = 0;
+      pres.style.height = (720 * baseScale) + 'px';
     } else {
-      // Desktop/landscape: fit and center via JS positioning
       var scaleX = window.innerWidth / 1280;
       var scaleY = window.innerHeight / 720;
-      var scale = Math.min(scaleX, scaleY);
-      wrapper.style.transform = 'scale(' + scale + ')';
-      // Center manually (transform-origin is always top-left)
-      var offsetX = (window.innerWidth - 1280 * scale) / 2;
-      var offsetY = (window.innerHeight - 720 * scale) / 2;
-      wrapper.style.left = offsetX + 'px';
-      wrapper.style.top = offsetY + 'px';
+      baseScale = Math.min(scaleX, scaleY);
+      baseLeft = (window.innerWidth - 1280 * baseScale) / 2;
+      baseTop = (window.innerHeight - 720 * baseScale) / 2;
       pres.style.height = '100vh';
     }
+
+    // Reset zoom on resize/orientation change
+    pinchZoom = 1;
+    pinchPanX = 0;
+    pinchPanY = 0;
+    applyTransform();
   }
 
   window.addEventListener('resize', scaleSlides);
@@ -598,6 +624,92 @@
     setTimeout(scaleSlides, 100);
   });
   scaleSlides();
+
+  // Pinch-to-zoom touch handling
+  (function() {
+    var presEl = document.querySelector('.presentation');
+    var startDist = 0;
+    var startZoom = 1;
+    var startPanX = 0;
+    var startPanY = 0;
+    var startMidX = 0;
+    var startMidY = 0;
+    var isPinching = false;
+    var isPanning = false;
+    var panStartX = 0;
+    var panStartY = 0;
+
+    function dist(t1, t2) {
+      var dx = t1.clientX - t2.clientX;
+      var dy = t1.clientY - t2.clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    presEl.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        isPinching = true;
+        isPanning = false;
+        startDist = dist(e.touches[0], e.touches[1]);
+        startZoom = pinchZoom;
+        startPanX = pinchPanX;
+        startPanY = pinchPanY;
+        startMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+        startMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+      } else if (e.touches.length === 1 && pinchZoom > 1.05) {
+        isPanning = true;
+        panStartX = e.touches[0].clientX - pinchPanX;
+        panStartY = e.touches[0].clientY - pinchPanY;
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    presEl.addEventListener('touchmove', function(e) {
+      if (isPinching && e.touches.length === 2) {
+        e.preventDefault();
+        var d = dist(e.touches[0], e.touches[1]);
+        var ratio = d / startDist;
+        pinchZoom = Math.min(Math.max(startZoom * ratio, 1), 4);
+
+        var midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+        var midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+        pinchPanX = startPanX + (midX - startMidX);
+        pinchPanY = startPanY + (midY - startMidY);
+
+        if (pinchZoom <= 1) {
+          pinchZoom = 1;
+          pinchPanX = 0;
+          pinchPanY = 0;
+        }
+        applyTransform();
+      } else if (isPanning && e.touches.length === 1 && pinchZoom > 1.05) {
+        e.preventDefault();
+        pinchPanX = e.touches[0].clientX - panStartX;
+        pinchPanY = e.touches[0].clientY - panStartY;
+        applyTransform();
+      }
+    }, { passive: false });
+
+    presEl.addEventListener('touchend', function(e) {
+      if (e.touches.length < 2) {
+        isPinching = false;
+      }
+      if (e.touches.length === 0) {
+        isPanning = false;
+        if (pinchZoom < 1.05) {
+          pinchZoom = 1;
+          pinchPanX = 0;
+          pinchPanY = 0;
+          applyTransform();
+        }
+      }
+      if (e.touches.length === 1 && pinchZoom > 1.05) {
+        isPanning = true;
+        panStartX = e.touches[0].clientX - pinchPanX;
+        panStartY = e.touches[0].clientY - pinchPanY;
+      }
+    });
+  })();
 
   // Idle detection - hide controls after 3s of no mouse movement
   function resetIdle() {
