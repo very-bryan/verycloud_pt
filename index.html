@@ -19,9 +19,6 @@
     overflow: hidden;
     width: 100vw;
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     user-select: none;
   }
@@ -30,16 +27,16 @@
     position: relative;
     width: 100vw;
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
   }
 
   .slide-wrapper {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 1280px;
     height: 720px;
-    transform-origin: center center;
+    transform-origin: top left;
   }
 
   .slide {
@@ -187,21 +184,6 @@
   @media (max-width: 768px) and (orientation: portrait) {
     body {
       overflow: auto;
-      display: block;
-    }
-
-    .presentation {
-      width: 100vw;
-      display: block;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .slide-wrapper {
-      position: absolute !important;
-      top: 0;
-      left: 0;
-      transform-origin: top left !important;
     }
 
     /* Hide desktop nav on mobile portrait */
@@ -587,21 +569,27 @@
 
   function scaleSlides() {
     const wrapper = document.getElementById('slideWrapper');
+    const pres = document.querySelector('.presentation');
+
     if (isMobilePortrait()) {
       // Mobile portrait: fit width 100%, top-aligned
-      const scale = window.innerWidth / 1280;
+      var scale = window.innerWidth / 1280;
       wrapper.style.transform = 'scale(' + scale + ')';
-      wrapper.style.transformOrigin = 'top left';
-      // Set presentation height to match scaled slide
-      document.querySelector('.presentation').style.height = (720 * scale) + 'px';
+      wrapper.style.left = '0px';
+      wrapper.style.top = '0px';
+      pres.style.height = (720 * scale) + 'px';
     } else {
-      // Desktop: center and fit
-      const scaleX = window.innerWidth / 1280;
-      const scaleY = window.innerHeight / 720;
-      const scale = Math.min(scaleX, scaleY);
+      // Desktop/landscape: fit and center via JS positioning
+      var scaleX = window.innerWidth / 1280;
+      var scaleY = window.innerHeight / 720;
+      var scale = Math.min(scaleX, scaleY);
       wrapper.style.transform = 'scale(' + scale + ')';
-      wrapper.style.transformOrigin = 'center center';
-      document.querySelector('.presentation').style.height = '100vh';
+      // Center manually (transform-origin is always top-left)
+      var offsetX = (window.innerWidth - 1280 * scale) / 2;
+      var offsetY = (window.innerHeight - 720 * scale) / 2;
+      wrapper.style.left = offsetX + 'px';
+      wrapper.style.top = offsetY + 'px';
+      pres.style.height = '100vh';
     }
   }
 
