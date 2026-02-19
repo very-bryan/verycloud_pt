@@ -190,11 +190,15 @@
 
     .presentation {
       width: 100vw;
-      height: auto;
       display: block;
+      position: relative;
+      overflow: hidden;
     }
 
     .slide-wrapper {
+      position: absolute !important;
+      top: 0;
+      left: 0;
       transform-origin: top left !important;
     }
 
@@ -208,25 +212,25 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
-      padding: 24px 0 32px;
+      gap: 20px;
+      padding: 32px 0 48px;
       background: #000;
     }
 
     .mobile-nav {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 24px;
     }
 
     .mobile-nav-btn {
-      width: 48px;
-      height: 48px;
+      width: 56px;
+      height: 56px;
       border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.15);
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.7);
-      font-size: 18px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.8);
+      font-size: 22px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -239,16 +243,17 @@
     }
 
     .mobile-slide-num {
-      color: rgba(255,255,255,0.5);
-      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      font-size: 18px;
+      font-weight: 600;
       font-variant-numeric: tabular-nums;
-      min-width: 50px;
+      min-width: 60px;
       text-align: center;
     }
 
     .mobile-hint {
-      color: rgba(255,255,255,0.35);
-      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      font-size: 15px;
     }
   }
 
@@ -380,46 +385,6 @@
     80% { transform: translateX(6px); }
   }
 
-  /* Lock Screen Mobile */
-  @media (max-width: 768px) {
-    .lock-box {
-      gap: 24px;
-      padding: 0 24px;
-      width: 100%;
-    }
-
-    .lock-icon {
-      width: 52px;
-      height: 52px;
-    }
-
-    .lock-icon svg {
-      width: 22px;
-      height: 22px;
-    }
-
-    .lock-title {
-      font-size: 20px;
-    }
-
-    .lock-subtitle {
-      font-size: 13px;
-      margin-top: -14px;
-    }
-
-    .lock-form {
-      flex-direction: column;
-      width: 100%;
-    }
-
-    .lock-input {
-      width: 100%;
-    }
-
-    .lock-submit {
-      width: 100%;
-    }
-  }
 </style>
 </head>
 <body>
